@@ -8,6 +8,7 @@
     let timer = 5;
     let timerInterval;
     let isBlinking = false;
+    let isGameOver = false;
     
     function generateQuestion() {
       num1 = Math.floor(Math.random() * 90) + 10;
@@ -16,12 +17,30 @@
     }
     
     function handleKeyPress(event) {
+      if (isGameOver) {
+        if (event.key === 'Enter') {
+          score = 0;
+          timer = 5;
+          isGameOver = false;
+          generateQuestion();
+          timerInterval = setInterval(() => {
+            timer -= 0.1;
+            if (timer <= 0) {
+              clearInterval(timerInterval);
+              isGameOver = true;
+              alert(`Game Over! Your final score is ${score}`);
+            }
+          }, 100);
+        }
+        return;
+      }
       if (event.key === 'Enter') {
         if (parseInt(input) === answer) {
           score += 1;
           timer -= 0.1;
           if (timer <= 0) {
             clearInterval(timerInterval);
+            isGameOver = true;
             alert(`Game Over! Your final score is ${score}`);
           }
         } else {
@@ -44,6 +63,7 @@
         timer -= 0.1;
         if (timer <= 0) {
           clearInterval(timerInterval);
+          isGameOver = true;
           alert(`Game Over! Your final score is ${score}`);
         }
       }, 100);

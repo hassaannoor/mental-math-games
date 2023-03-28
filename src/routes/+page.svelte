@@ -37,12 +37,8 @@
       if (event.key === 'Enter') {
         if (parseInt(input) === answer) {
           score += 1;
-          timer -= 0.1;
-          if (timer <= 0) {
-            clearInterval(timerInterval);
-            isGameOver = true;
-            alert(`Game Over! Your final score is ${score}`);
-          }
+          timer = 5;
+          generateQuestion();
         } else {
           score -= 2;
           isBlinking = true;
@@ -51,7 +47,6 @@
           }, 500);
         }
         input = '';
-        generateQuestion();
       } else if (event.key >= '0' && event.key <= '9') {
         input += event.key;
       }

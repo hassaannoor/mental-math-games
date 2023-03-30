@@ -5,11 +5,17 @@
     let num1, num2, answer;
     let input = '';
     let fontSize = '6em';
-    let timer = 5;
+    const ORIGINAL_TIME = 15;
+    let time = ORIGINAL_TIME;
+    let timer = time;
     let timerInterval;
     let isBlinking = false;
     let isGameOver = false;
-    
+  
+    const correctSound = new Audio("https://www.freesoundslibrary.com/wp-content/uploads/2018/01/ding-sound-effect.mp3");
+    const incorrectSound = new Audio("https://www.freesoundslibrary.com/wp-content/uploads/2018/03/game-show-buzzer-sound-effect.mp3");
+    incorrectSound.volume = 0.1;
+      
     function generateQuestion() {
       num1 = Math.floor(Math.random() * 90) + 10;
       num2 = Math.floor(Math.random() * 90) + 10;
@@ -20,7 +26,7 @@
       if (isGameOver) {
         if (event.key === 'Enter') {
           score = 0;
-          timer = 5;
+          timer = time = ORIGINAL_TIME;
           isGameOver = false;
           generateQuestion();
           timerInterval = setInterval(() => {
@@ -37,14 +43,17 @@
       if (event.key === 'Enter') {
         if (parseInt(input) === answer) {
           score += 1;
-          timer = 5;
+          time -= 0.1;
+          timer = time;
           generateQuestion();
+          correctSound.play();
         } else {
-          score -= 2;
+          score -= 1;
           isBlinking = true;
           setTimeout(() => {
             isBlinking = false;
           }, 500);
+          incorrectSound.play();
         }
         input = '';
       } else if (event.key >= '0' && event.key <= '9') {
